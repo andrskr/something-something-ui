@@ -30,6 +30,12 @@ release. Add a tool name to select part of the graph. For example, run
 
 A minimal Vite+ monorepo: one app, one design-system package.
 
+## Communication style
+
+**Always write in ASD-STE100 Simplified Technical English** — short sentences, one instruction per
+sentence, approved/plain vocabulary, active voice. This applies to chat responses, commit messages,
+PR descriptions, and code comments in this repo.
+
 ## Ownership map
 
 - `apps/web/` (`@acme/web`): the TanStack Start application. File routes live under `src/routes/`;
