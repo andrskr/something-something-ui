@@ -1,0 +1,19 @@
+@import "@acme/ui/styles.css";
+
+@layer product;
+
+@layer product {
+  html {
+    min-block-size: 100%;
+    background-color: var(--color-background-body);
+  }
+
+  body {
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    background-color: var(--color-background-body);
+    color: var(--color-text-primary);
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-base);
+  }
+}
