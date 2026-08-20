@@ -3,6 +3,7 @@ import { AppShell } from "@acme/ui";
 import type { ReactNode } from "react";
 
 import { Document } from "#/app/document.tsx";
+import { NotFound } from "#/app/not-found.tsx";
 import { AppProviders } from "#/app/providers.tsx";
 import appCss from "#/styles.css?url";
 
@@ -24,6 +25,7 @@ export const Route = createRootRoute({
       ? [{ defer: true, src: stylexDevelopmentRuntime, type: "module" as const }]
       : [],
   }),
+  notFoundComponent: NotFound,
   shellComponent: RootShell,
 });
 
