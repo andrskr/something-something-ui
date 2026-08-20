@@ -1,7 +1,7 @@
-import { LinkProvider, Theme, neutralTheme } from "@acme/ui";
-import type { ReactNode } from "react";
+import { LinkProvider, Theme, neutralTheme } from '@acme/ui';
+import type { ReactNode } from 'react';
 
-import { RouterLink } from "./router-link.tsx";
+import { RouterLink } from './router-link.tsx';
 
 export function AppProviders({ children }: Readonly<{ children: ReactNode }>) {
   return (

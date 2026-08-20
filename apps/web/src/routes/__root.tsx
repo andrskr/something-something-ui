@@ -1,28 +1,30 @@
-import { createRootRoute } from "@tanstack/react-router";
-import { AppShell } from "@acme/ui";
-import type { ReactNode } from "react";
+import { AppShell } from '@acme/ui';
+import { createRootRoute } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
 
-import { Document } from "#/app/document.tsx";
-import { NotFound } from "#/app/not-found.tsx";
-import { AppProviders } from "#/app/providers.tsx";
-import appCss from "#/styles.css?url";
+import { Document } from '#/app/document.tsx';
+import { NotFound } from '#/app/not-found.tsx';
+import { AppProviders } from '#/app/providers.tsx';
 
-const stylexDevelopmentRuntime = "/@id/virtual:stylex:runtime";
-const stylexDevelopmentStylesheet = "/virtual:stylex.css";
+import appCss from '#/styles.css?url';
+
+const stylexDevelopmentRuntime = '/@id/virtual:stylex:runtime';
+const stylexDevelopmentStylesheet = '/virtual:stylex.css';
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Something Something UI" },
+      // eslint-disable-next-line unicorn/text-encoding-identifier-case -- HTML charset attribute, not a Node.js encoding identifier
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'Something Something UI' },
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
-      ...(import.meta.env.DEV ? [{ rel: "stylesheet", href: stylexDevelopmentStylesheet }] : []),
+      { rel: 'stylesheet', href: appCss },
+      ...(import.meta.env.DEV ? [{ rel: 'stylesheet', href: stylexDevelopmentStylesheet }] : []),
     ],
     scripts: import.meta.env.DEV
-      ? [{ defer: true, src: stylexDevelopmentRuntime, type: "module" as const }]
+      ? [{ defer: true, src: stylexDevelopmentRuntime, type: 'module' as const }]
       : [],
   }),
   notFoundComponent: NotFound,

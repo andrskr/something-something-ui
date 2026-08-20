@@ -1,5 +1,5 @@
-import { HeadContent, Scripts } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { HeadContent, Scripts } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
 
 export function Document({ children }: Readonly<{ children: ReactNode }>) {
   return (
