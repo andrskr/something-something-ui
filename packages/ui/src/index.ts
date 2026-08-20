@@ -10,6 +10,9 @@ export type { ButtonProps } from '@astryxdesign/core/Button';
 export { Link, LinkProvider } from '@astryxdesign/core/Link';
 export type { LinkProps, LinkProviderProps } from '@astryxdesign/core/Link';
 
+export { OtpField } from './OtpField/index.ts';
+export type { OtpFieldProps, OtpFieldSize, OtpFieldValidationType } from './OtpField/index.ts';
+
 export { Theme } from '@astryxdesign/core/theme';
 
 export { neutralTheme } from '@astryxdesign/theme-neutral/built';

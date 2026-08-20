@@ -10,14 +10,22 @@
     ".": "./src/index.ts",
     "./styles.css": "./src/styles.css"
   },
+  "scripts": {
+    "test": "vp test run"
+  },
   "dependencies": {
     "@astryxdesign/core": "catalog:",
-    "@astryxdesign/theme-neutral": "catalog:"
+    "@astryxdesign/theme-neutral": "catalog:",
+    "@base-ui/react": "catalog:",
+    "@base-ui/utils": "catalog:"
   },
   "devDependencies": {
+    "@astryxdesign/build": "catalog:",
     "@stylexjs/stylex": "catalog:",
     "@types/react": "catalog:",
-    "@types/react-dom": "catalog:"
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "vitest-browser-react": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",
