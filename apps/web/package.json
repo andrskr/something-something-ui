@@ -6,6 +6,7 @@
     "#/*": "./src/*"
   },
   "scripts": {
+    "astryx": "astryx",
     "dev": "vp dev --port 3000",
     "generate-routes": "tsr generate",
     "build": "vp build",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@astryxdesign/build": "catalog:",
+    "@astryxdesign/cli": "catalog:",
     "@babel/core": "catalog:",
     "@stylexjs/babel-plugin": "catalog:",
     "@stylexjs/unplugin": "catalog:",

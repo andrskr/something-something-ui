@@ -9,6 +9,10 @@
   }
 
   body {
+    /* Base UI: containing block for popup backdrops that use position: absolute
+       instead of fixed, for iOS 26+ Safari, where content can show beneath the
+       UI chrome. https://base-ui.com/react/overview/quick-start#ios-26-safari */
+    position: relative;
     min-block-size: 100vh;
     min-block-size: 100svh;
     background-color: var(--color-background-body);

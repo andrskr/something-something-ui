@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "setup": "vp install",
-    "astryx": "astryx",
     "dev": "vp run web#dev",
     "format": "vp fmt --check",
     "lint": "vp lint",
@@ -15,7 +14,6 @@
     "prepare": "vp config --no-agent"
   },
   "devDependencies": {
-    "@astryxdesign/cli": "catalog:",
     "vite": "catalog:",
     "vite-plus": "catalog:"
   },
