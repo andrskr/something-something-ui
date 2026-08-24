@@ -1,4 +1,5 @@
-import { EmptyState, Link } from '@acme/ui';
+import { EmptyState } from '@astryxdesign/core/EmptyState';
+import { Link } from '@astryxdesign/core/Link';
 
 const homeLink = (
   <Link href="/" isStandalone>

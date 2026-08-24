@@ -13,7 +13,6 @@
     "preview": "vp preview"
   },
   "dependencies": {
-    "@acme/ui": "workspace:*",
     "@astryxdesign/core": "catalog:",
     "@astryxdesign/theme-neutral": "catalog:",
     "@stylexjs/stylex": "catalog:",

@@ -53,7 +53,7 @@ local `vite-plus` package. Use `vp why <package>` to show the package-manager de
 
 # Something Something UI
 
-A minimal Vite+ monorepo: one app, one design-system package.
+A minimal Vite+ monorepo: one app, no design-system package right now.
 
 ## Communication style
 
@@ -66,15 +66,16 @@ PR descriptions, and code comments in this repo.
 - `apps/web/` (`@acme/web`): the TanStack Start application. File routes live under `src/routes/`;
   framework composition (document shell, providers, router-link) lives under `src/app/`. Has its own
   `apps/web/AGENTS.md` for Astryx-specific guidance — read it before building any UI there.
-- `packages/ui/` (`@acme/ui`): the workspace's design-system boundary. Wraps `@astryxdesign/core`
-  and `@astryxdesign/theme-neutral` and re-exports the exact primitives apps may use, plus owns the
-  reset/base/theme CSS bootstrap via the `./styles.css` export.
+- There is no `packages/ui` design-system wrapper right now (removed 2026-08-24; a prior `@acme/ui`
+  package existed briefly). `apps/web` consumes `@astryxdesign/core` and
+  `@astryxdesign/theme-neutral` directly. If a real custom-component need comes up again,
+  re-introduce a wrapper package then — don't build one speculatively.
 
 ## Operating contract
 
 - Use pnpm only through Vite+ (`vp`), and run workspace commands from the repository root.
-- `apps/web` must consume Astryx exclusively through `@acme/ui` — never import `@astryxdesign/core`
-  directly in application code.
+- `apps/web` imports `@astryxdesign/core`/`@astryxdesign/theme-neutral` directly — there is no
+  wrapper package to route through.
 - This file holds workspace-wide conventions only. Package-specific guidance (tooling that only
   applies inside one package, like Astryx's CLI docs for `apps/web`) belongs in that package's own
   `AGENTS.md`, not here.

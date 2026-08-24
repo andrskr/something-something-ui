@@ -344,15 +344,6 @@ export default defineConfig({
     },
     overrides: [
       {
-        // Astryx's own authoring convention mandates PascalCase filenames that
-        // match the exported component: Button/Button.tsx, Button/Button.doc.mjs.
-        // We mirror that convention for our own components in packages/ui.
-        files: ['packages/ui/src/**/*'],
-        rules: {
-          'unicorn/filename-case': 'off',
-        },
-      },
-      {
         files: ['apps/web/src/routes/**/*'],
         rules: {
           // TanStack Router owns route-module HMR and requires the exported Route contract.

@@ -1,4 +1,4 @@
-import { AppShell } from '@acme/ui';
+import { AppShell } from '@astryxdesign/core/AppShell';
 import { createRootRoute } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 
