@@ -121,6 +121,8 @@ export function assertSealed(s: RunSummary, expectedModel: string): void {
     throw new Error(`environment leaked: ${slashCommands} slash commands reached the Run`);
   if (!mcpServers.includes('astryx'))
     throw new Error(`Astryx MCP not connected (saw: ${mcpServers.join(', ') || 'none'})`);
-  if (model !== expectedModel)
-    throw new Error(`model drifted: asked for ${expectedModel}, got ${model}`);
+  // The CLI may append a context-window suffix, e.g. `claude-opus-5[1m]`.
+  if (model === null || !model.startsWith(expectedModel)) {
+    throw new Error(`model drifted: asked for ${expectedModel}, got ${model ?? 'nothing'}`);
+  }
 }

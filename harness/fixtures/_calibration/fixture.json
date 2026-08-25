@@ -1,0 +1,13 @@
+{
+  "id": "_calibration",
+  "title": "Model calibration (spike prompt, verbatim)",
+  "kind": "greenfield",
+  "persona": "vague-operator",
+  "category": "dashboard",
+  "target": "apps/web/src/routes/overview.tsx",
+  "holdout": false,
+  "pilot": false,
+  "ideal": false,
+  "expectedComponents": [],
+  "expectations": []
+}

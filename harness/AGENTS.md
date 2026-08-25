@@ -74,8 +74,10 @@ the effect and Arm 3 has nothing left to show.
 - **Slash commands are disabled in all three Arms.** The built-in `dataviz` skill triggers on
   "chart, graph, plot, dashboard" and would hand every Arm free guidance on our strongest rule.
   Built-ins cannot be disabled selectively.
-- **`--model` is always explicit.** It changes silently with settings — a Run drifted from
-  `claude-opus-5[1m]` to `claude-sonnet-5` when user settings were dropped.
+- **`--model` and `--effort` are always explicit.** Both change silently with settings — a Run
+  drifted from `claude-opus-5[1m]` to `claude-sonnet-5` when user settings were dropped.
+  `assertSealed()` catches model drift; **effort is not reported in the transcript, so it cannot be
+  verified after the fact** — which is exactly why it is always passed.
 - **Use `vp check`, never `vp lint`.** `vp lint` is a Vite+ built-in that reports nothing here; a
   scorer wired to it silently passes everything.
 - **Score generated code in situ.** A route passes `vp check` in `src/routes/` and trips
@@ -84,6 +86,27 @@ the effect and Arm 3 has nothing left to show.
 - **Build before checking.** `vp run build` regenerates `routeTree.gen.ts`. A Run that adds a route
   fails type checking until it does, so checking first would falsely fail every greenfield Fixture
   in every Arm. `run.ts` builds first for this reason.
+
+## Sweep parameters
+
+Measured on the same prompt, Arm `off`, in `_calibration`:
+
+|                     | Sonnet             | Opus               |
+| ------------------- | ------------------ | ------------------ |
+| turns / cost / wall | 43 / $1.10 / 315 s | 65 / $4.47 / 574 s |
+| `check` / `build`   | pass / pass        | pass / pass        |
+
+**The Sweep runs on `sonnet` at `--effort medium`, `--max-turns 80`.** Opus costs 4x for the same
+verdict, and Divergence needs five Repeats, which is precisely what Opus makes unaffordable. A
+**60-Run Sweep is ~$66 and ~5.3 h on Sonnet, versus ~$268 and ~9.6 h on Opus.**
+
+**Spot-check on Opus**: one Run per Fixture in Arms `off` and `full` — 8 extra Runs, ~$36 — so we
+can say the effect holds on the stronger model without paying 4x for everything.
+
+Note the variance: the same prompt on Sonnet produced 60 turns /
+$1.70 / 475 s in one Run and
+43 / $1.10 / 315 s in another. **Single Runs are not comparable.** Five
+Repeats is a floor, not a luxury.
 
 ## What a Run tells you
 

@@ -25,6 +25,20 @@ function sh(cmd: string, args: string[], cwd: string, quiet = true) {
   return { code: r.status ?? 1, out: r.stdout, err: r.stderr };
 }
 
+/**
+ * The CLI accepts aliases but reports canonical ids, sometimes with a context suffix
+ * (`claude-opus-5[1m]`). assertSealed compares against this, so aliases must resolve.
+ */
+function expectedModelId(model: string): string {
+  const alias: Record<string, string> = {
+    opus: 'claude-opus-5',
+    sonnet: 'claude-sonnet-5',
+    haiku: 'claude-haiku-4-5-20251001',
+    fable: 'claude-fable-5',
+  };
+  return alias[model] ?? model;
+}
+
 const isArm = (v: string): v is Arm => (ARMS as readonly string[]).includes(v);
 
 function arg(name: string, fallback?: string): string {
@@ -76,6 +90,10 @@ function main() {
   const arm = armArg;
   const model = arg('model', 'sonnet');
   const maxTurns = arg('max-turns', '80');
+  // Pinned, never inherited. Effort can be set in settings we do not control, and an
+  // unpinned value makes two Arms incomparable for a reason nobody would think to check -
+  // the same hazard that silently switched the model in issue #4.
+  const effort = arg('effort', 'medium');
 
   const fixtureDir = join(HARNESS, 'fixtures', fixture);
   const prompt = readFileSync(join(fixtureDir, 'PROMPT.md'), 'utf8')
@@ -100,6 +118,8 @@ function main() {
       '--verbose',
       '--model',
       model,
+      '--effort',
+      effort,
       '--strict-mcp-config',
       '--mcp-config',
       join(wt, '.mcp.json'),
@@ -117,7 +137,7 @@ function main() {
   writeFileSync(join(out, 'run.jsonl'), run.out);
 
   const summary = parseTranscript(run.out);
-  assertSealed(summary, model === 'sonnet' ? 'claude-sonnet-5' : model);
+  assertSealed(summary, expectedModelId(model));
   if (summary.turns >= Number(maxTurns)) console.warn(`WARN: Run hit the turn cap (${maxTurns})`);
 
   // Extract exactly what the Run produced.
@@ -145,6 +165,7 @@ function main() {
     fixture,
     arm,
     model,
+    effort,
     prepMs: tPrep - t0,
     runMs: tRun - tPrep,
     totalMs: Date.now() - t0,
