@@ -74,6 +74,9 @@ the effect and Arm 3 has nothing left to show.
 - **Slash commands are disabled in all three Arms.** The built-in `dataviz` skill triggers on
   "chart, graph, plot, dashboard" and would hand every Arm free guidance on our strongest rule.
   Built-ins cannot be disabled selectively.
+- **An interrupted Run is rejected, not scored.** A killed Run yields a transcript with no result
+  event, which parses to `turns 0, cost $0` — so it looks like the cheapest, fastest Run in the
+  Sweep rather than a failure. `assertComplete()` throws instead. Re-run it.
 - **`--model` and `--effort` are always explicit.** Both change silently with settings — a Run
   drifted from `claude-opus-5[1m]` to `claude-sonnet-5` when user settings were dropped.
   `assertSealed()` catches model drift; **effort is not reported in the transcript, so it cannot be

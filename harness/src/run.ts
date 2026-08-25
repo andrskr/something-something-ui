@@ -11,7 +11,7 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 import { join } from 'node:path';
 
 import { applyArm, type Arm, ARMS } from './lib/arms.ts';
-import { assertSealed, parseTranscript } from './lib/transcript.ts';
+import { assertComplete, assertSealed, parseTranscript } from './lib/transcript.ts';
 
 const REPO = execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim();
 const HARNESS = join(REPO, 'harness');
@@ -137,6 +137,7 @@ function main() {
   writeFileSync(join(out, 'run.jsonl'), run.out);
 
   const summary = parseTranscript(run.out);
+  assertComplete(summary);
   assertSealed(summary, expectedModelId(model));
   if (summary.turns >= Number(maxTurns)) console.warn(`WARN: Run hit the turn cap (${maxTurns})`);
 

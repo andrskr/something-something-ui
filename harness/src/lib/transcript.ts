@@ -1,6 +1,8 @@
 /** Everything we read out of a Run, parsed from `--output-format stream-json`. */
 export interface RunSummary {
   ok: boolean;
+  /** False when the transcript carries no result event - see assertComplete. */
+  complete: boolean;
   subtype: string;
   stopReason: string | null;
   turns: number;
@@ -82,6 +84,7 @@ export function parseTranscript(jsonl: string): RunSummary {
 
   return {
     ok: result.subtype === 'success',
+    complete: events.some((e) => e.type === 'result'),
     subtype: str(result.subtype) ?? 'unknown',
     stopReason: str(result.stop_reason),
     turns: num(result.num_turns),
@@ -114,6 +117,20 @@ export function parseTranscript(jsonl: string): RunSummary {
  * - Arm 1 would not have been "Off" at all. A leak invalidates the Run silently, so we fail loudly
  * instead.
  */
+/**
+ * Refuse to score a Run that did not finish.
+ *
+ * A killed or interrupted Run yields a transcript with no result event, which parses to turns 0 and
+ * cost 0 - so it looks like the cheapest, fastest Run in the Sweep instead of a failure, and drags
+ * every average silently. Measured: a Run interrupted at 583 transcript lines reported turns=0,
+ * cost=$0 and passed every other check.
+ */
+export function assertComplete(s: RunSummary): void {
+  if (!s.complete) {
+    throw new Error('transcript has no result event - the Run was interrupted and must be re-run');
+  }
+}
+
 export function assertSealed(s: RunSummary, expectedModel: string): void {
   if (s.seal === null) throw new Error('no init event - cannot verify the environment was sealed');
   const { slashCommands, mcpServers, model } = s.seal;
