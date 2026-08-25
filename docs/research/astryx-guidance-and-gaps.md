@@ -6,8 +6,12 @@ Research for [#16](https://github.com/andrskr/something-something-ui/issues/16).
 This document supplies the raw material for `design.md` ([#9](https://github.com/andrskr/something-something-ui/issues/9)).
 Read it with one question in mind: **what does the Foundation not decide for you?** A prior baseline
 showed that the Foundation alone already writes idiomatic, building code. Any rule that restates what
-the Foundation already gets right will score at the ceiling in every Arm. Only Buckets B and C earn
+the Foundation already gets right will score at the ceiling in every Arm. Only Buckets B, C and D earn
 their place.
+
+The material sorts into four buckets. **A** is settled and we adopt it verbatim. **B** is open, so we
+pick one. **C** is silent, so we author from nothing. **D** routes the agent to a command instead of
+paraphrasing what the command would say — the cheapest rules of all, because they never go stale.
 
 Terms follow `CONTEXT.md`. **Foundation** means Astryx. **Layer** means the material we author.
 **Delivery channel** means the route by which Layer material reaches an agent.
@@ -84,6 +88,11 @@ the cross-check section, not measured.
 | 8 | Set `LayoutContent padding={4}` and one outer `VStack gap={6}` on every page. Vary nothing else. | C | Template padding is 0, 3, 4, 6, or omitted with no stated reason. |
 | 9 | Sort every table by default on its most meaningful column, and mark that column sortable. | C | Not one of the 14 page templates sets `sortable` on a single column. |
 | 10 | Encode trend direction with `--color-success` and `--color-error`, never with a categorical data token. | C | `dashboard-portfolio` uses both vocabularies for the same up/down concept in one file. |
+
+The ranking above covers Buckets B and C only. Two Bucket D rules would displace items 8 and 9 if D
+were included: **D14** (never use a template scaffold as code — strip six specific things first) and
+**D2** (when `astryx build` reports "No exact match", do not scaffold its fallback). Both change
+whether the output compiles at all, which outranks anything that changes only how it looks.
 
 ---
 
@@ -327,6 +336,53 @@ The **only** normative sentence about charts anywhere in the CLI:
 
 It is buried in a hook doc. `astryx docs color` never mentions it. See C25.
 
+### A26. The generated agent brief in `apps/web/AGENTS.md` — VERIFIED
+
+The block between `<!-- ASTRYX:START -->` and `<!-- ASTRYX:END -->` is Astryx's own generated brief.
+It is regenerated verbatim by `astryx init --features agents`, so it is Foundation material and it is
+settled. `astryx doctor` checks for it and reports "Astryx agent docs section present in AGENTS.md,
+CLAUDE.md". VERIFIED.
+
+`design.md` must not restate any of it. What it already says, verbatim:
+
+> "No `<div>` — components do all layout/spacing. Full page → AppShell; sidebar nav → SideNav."
+> "Frame first: pick the shell (AppShell / Layout+LayoutPanel) and budget regions in px BEFORE
+> writing content."
+> "Dense data = rows (Table, List/Item) edge-to-edge — never Card-wrapped list items. Card = dashboard
+> widgets, galleries, settings groups only."
+> "Status → StatusDot/Token; Badge only for counts and enumerated states, never decoration."
+> "Custom styling: component props first; else the xstyle prop / StyleX tokens. No raw hex/px."
+> "Tokens for every value. Brand/accent via `astryx theme` — never override `--color-*` in `:root`."
+> "SELF-CHECK before you finish: re-read the file and replace any `className=`, `style={{…}}`, raw
+> `<div>`/`<span>` layout, imported `.css`/`@apply`, or hardcoded `#hex`/`px` with the component or the
+> xstyle prop + a token."
+
+Note what this block **already settles that Bucket B lists as open**: it says "Full page → AppShell",
+which decides B2, and "component props first; else the xstyle prop", which decides B1. Both are
+therefore Arm-2 material we get for free — the always-on channel already carries them. **Do not spend
+`design.md` ink on B1 or B2.** They are listed in Bucket B because the CLI and the templates leave
+them open; `AGENTS.md` closes them.
+
+Note also what it leaves out: it names `docs <topic>` as a flat list of 15 topics with no routing, and
+it never mentions `astryx search`, `astryx doctor`, `astryx manifest`, `astryx hook`, `astryx blog`,
+or `astryx layout`. See Bucket D.
+
+### A27. The order of operations before writing UI (`astryx build`, no args) — VERIFIED
+
+`astryx build` with no arguments prints the workflow playbook. This is the Foundation's own stated
+order, and it is settled:
+
+> "1. Find a starting point for what you're building: `astryx build "<what you're building>"` — returns
+> the closest [page] template, the [block]s that cover parts, and the [component]s to fill the gaps."
+> "2. If a [page] template matches → scaffold it and adapt: `astryx template <name> [path]`"
+> "3. If nothing matches exactly → compose: `astryx template <name> --skeleton` to study a close page's
+> layout; `astryx template <BlockName>` to drop in each block from the kit; `astryx component <Name>`
+> to fill remaining gaps."
+> "Tip: `astryx build "<idea>"` is the fastest way in. For a neutral lookup of any
+> component/doc/template, use `astryx search <query>`."
+
+`apps/web/AGENTS.md` states the same three steps and adds "discover, don't guess".
+
 ---
 
 ## Bucket B — open choices, we must pick one
@@ -350,6 +406,10 @@ Modules and Sass are all sanctioned. The only narrowing is "For component-specif
 > with `stylex.create()` and token imports from `@astryxdesign/core/theme/tokens.stylex`. Never use
 > `className`, never use a `style` object, never import a `.css` file.
 
+**Already closed by A26.** The `AGENTS.md` block says "component props first; else the xstyle prop",
+so Arm 2 gets this for free. Do not spend `design.md` ink here. It stays in Bucket B because the CLI
+and the templates leave it open.
+
 *Expectation hook.* Grep the generated file for `className=`, `style={{`, and `.css`. All three must
 be absent.
 
@@ -364,6 +424,10 @@ block templates. The Foundation's own instruction and its own examples disagree.
 > `LayoutHeader`, `LayoutContent`, and an optional end-slot `LayoutPanel`.
 
 *Expectation hook.* The generated route file contains `<AppShell` and `<LayoutHeader`.
+
+**Already closed by A26.** The `AGENTS.md` block says "Full page → AppShell; sidebar nav → SideNav",
+so Arm 2 gets this for free. It stays in Bucket B because all 14 page templates contradict it, which
+makes it a live Divergence risk in Arm 1.
 
 ### B3. `SideNav` versus `TopNav` — VERIFIED open
 
@@ -619,6 +683,13 @@ The data tokens **do ship** in the installed package, at
 `Best Practices` — and none of them mentions a data token. VERIFIED. The tokens appear in the CLI
 corpus only inside a `useTheme` code example.
 
+**The silence spans both Delivery channels.** I checked the MCP server, which serves the website's
+corpus. `mcp__astryx__get("color", {section: "data"})` errors and lists the available sections as
+`["Overview", "Surface Colors", "Usage", "Best Practices"]` — identical to the CLI.
+`mcp__astryx__get("tokens", {section: "data"})` errors and lists fourteen sections, none of them about
+data. VERIFIED. **Correction:** a first pass reported that the website's `/docs/color` lists the
+data-viz tokens with no prose. It does not list them at all. Neither channel documents them.
+
 The source file's header comment is the closest thing to chart doctrine that exists:
 
 > "Categorical: one accent per category (use for distinct series/dimensions)"
@@ -831,6 +902,229 @@ docs: the Banner title example, the `EmptyState` "No projects yet" example, and 
 
 ---
 
+## Bucket D — discovery guidance, when should an agent run what?
+
+Astryx's position is that the CLI is the documentation and the source of truth. Our cheapest,
+highest-leverage rules are therefore ones that **send the agent to a command instead of paraphrasing
+what it would find there**. A rule that routes costs one line and never goes stale. A rule that
+restates goes stale on the next `@astryxdesign/core` bump.
+
+This bucket does not author or register anything into Astryx. Registering our own material stays out
+of scope per [#5](https://github.com/andrskr/something-something-ui/issues/5).
+
+**Count: 14 candidate rules.**
+
+### D-a. What each command is actually best at
+
+VERIFIED by running each. "Disappoints" is the part a routing rule has to work around.
+
+| Command | Best at | Disappoints |
+| --- | --- | --- |
+| `astryx build "<idea>"` | The one-shot way in. Returns RECOMMENDED START, PAGE TEMPLATES, BLOCKS, DOMAIN COMPONENTS, FRAME + FOUNDATION in one call. | Always recommends *something*. For `"chart"` and `"error state"` it says "No exact match" and then recommends a template that does not contain the thing asked for. Its recommendation for `"analytics dashboard"` does not build in this repo. |
+| `astryx search "<query>"` | Neutral ranked lookup across components, hooks, docs and templates in one list, with a `command:` line per hit. Best when you do not know which *kind* of thing you need. | Flat list, no grouping by relevance to a task. Returns 20 hits by default. |
+| `astryx component <Name>` | Props, defaults, best practices, and worked examples. The only reliable source for what a prop accepts. | Many props report `default = None` even where a default exists in behaviour. `--detail compact` works here but not on `docs`. |
+| `astryx component --list` | The 155-component inventory. | Flat alphabetical, no categories, ~2000 lines. Use `search` instead unless you need the whole inventory. |
+| `astryx template --list` | The 43 page recipes and 614 block recipes. `--json` gives the real ids. | **The display name is not the id.** `astryx template "Analytics Dashboard"` fails; you must pass `dashboard`. Three page templates are `isReady: false`. |
+| `astryx template <name> [--skeleton]` | Real composed reference code. `--skeleton` shows structure without content, which is the cheap read. | The scaffolded code does not build here and does not lint. See the cross-check. |
+| `astryx docs <topic> [section]` | Doctrine, not API. The section argument keeps it cheap. | Only 15 topics, and the routing between them is not obvious. `--detail brief\|compact` returns 0 bytes. |
+| `astryx hook <Name>` | Hook docs. Holds the **only** normative sentence about chart colour, under `useTheme`. | Not mentioned in `apps/web/AGENTS.md` at all, so an agent has no reason to run it. |
+| `astryx doctor` | Preconditions: Node version, core/CLI alignment, theme wiring, whether the agent docs block is present. Six checks, all `[ok]` here. | Says nothing about whether template dependencies resolve. |
+| `astryx manifest --json` | The machine-readable capability surface: `name`, `version`, `apiVersion`, `globalOptions`, `commands`, `jsonSupported`, `responseTypes`. The right thing for the Instrument to parse. | Not mentioned in `apps/web/AGENTS.md`. |
+| `astryx layout expand\|check\|grammar` | A layout DSL that claims to emit *validated* TSX from a compressed expression. | **Broken in 0.3.0 — see D-e.** |
+| `astryx discover` | Nothing here. Returns "No integrations configured." | — |
+
+> **D1.** Start every UI task with `astryx build "<what you are building>"`. Read the whole kit before
+> writing any code.
+
+> **D2.** When `astryx build` reports "No exact match", do not scaffold the template it falls back to.
+> Compose from the BLOCKS and DOMAIN COMPONENTS sections instead.
+
+*Expectation hook.* For a Fixture whose subject has no matching template — a chart, an error state —
+the transcript shows a `build` call and no `template` scaffold of the fallback.
+
+> **D3.** Pass template ids, never display names. Get ids from `astryx template --list --json`.
+
+> **D4.** Run `astryx component <Name>` before using any component for the first time in a file. Never
+> guess a prop name. `astryx docs principles` lists "Inventing props" as an anti-pattern.
+
+*Expectation hook.* Every Astryx component in the output uses only props that
+`astryx component <Name> --json` reports.
+
+### D-b. Routing table: which `astryx docs <topic>` answers which design question
+
+VERIFIED — all 15 topics read. This table is the deliverable a routing rule cites, so `design.md`
+never has to paraphrase the content.
+
+| Design question | Topic | What you get |
+| --- | --- | --- |
+| Which shell? How wide is a region? How does it collapse? | `layout` | Frame First, App Archetypes, Cards vs Rows, Panels and Inspectors, Responsive Contract |
+| Card or rows? Card or Section? | `layout` (`Cards vs Rows`) then `component Card` | The archetype table, then the "could I reorder it independently?" test |
+| What are the non-negotiables? | `principles` | 8 rules and 7 anti-patterns |
+| How much space? | `spacing` | The 4px scale, 0 to 12, and the step heuristic |
+| Which text style? Heading or Text? | `typography` | Type scale, the Heading/Text split, the display-for-data-callouts rule |
+| Which colour? | `color` | Semantic surface, text, icon, border and status tokens. **Not** data-viz tokens |
+| Which shadow? | `elevation` | The four-step none/low/med/high rule |
+| Which corner radius? | `shape` | inner / element / container / page / full |
+| How fast should it animate? | `motion` | Duration and easing tokens, reduced-motion |
+| Which icon? | `icons` | 28 semantic names, including `arrowsUpDown`, `funnel`, `viewColumns` |
+| What goes in an empty state? | `illustrations` + `component EmptyState` | 120-240px sizing; title and next step |
+| What is the full token list? | `tokens` | Every token by family. **No data-viz family** |
+| How do I style something a prop does not cover? | `styling` | xstyle, StyleX, Tailwind, className, data attributes, "What NOT to Do" |
+| How do I change the brand? | `theme` | `defineTheme`, `resolveThemeTokens`, `useTheme` |
+| RTL, locales, translations? | `internationalization` | Direction, catalogs, react-intl interop. **No number or currency formatting** |
+| Coming from Tailwind or shadcn? | `migration` | Incremental migration order |
+
+Three questions an analytics surface asks that **no topic answers**: how to format a number, how to
+build a chart, and how to write a label. Those are Bucket C.
+
+> **D5.** For any question about spacing, colour, type, radius, elevation, motion, icons or layout,
+> run `astryx docs <topic>` and follow what it says. Do not reason from memory about what a design
+> system usually does.
+
+> **D6.** Pass the section argument on large topics: `astryx docs theme "defineTheme"`, not
+> `astryx docs theme`. `theme` is 288 lines and `tokens` is 251.
+
+> **D7.** For chart colour, run `astryx hook useTheme`. It is the only place the Foundation says
+> anything normative about chart series, and `astryx docs color` does not link to it.
+
+### D-c. MCP versus CLI
+
+This session reaches Astryx two ways. `.mcp.json` configures `astryx` as an **HTTP server at
+`https://astryx.atmeta.com/mcp`** — it is the *website's* corpus, not the installed package. VERIFIED
+by reading `.mcp.json`. It exposes exactly two tools, `search(query, limit)` and
+`get(name, section?)`.
+
+**What MCP returns that the CLI does not.** VERIFIED, and this is the finding that matters.
+
+`mcp__astryx__search("dashboard template")` returns three analytics page templates that **do not
+exist in the installed CLI**: `dashboard-data` ("Data Dashboard — filter bar, overview KPI cards with
+sparklines and d/d, w/w, m/m, y/y deltas, active-users-by-device trend, audience demographics and
+acquisition channels"), `dashboard-cohort-funnel` ("conversion-rate KPIs, a multi-stage conversion
+funnel with drop-off cards, a conversion-over-time trend chart, and a weekly cohort retention grid
+rendered as a colour-coded heatmap table"), and `dashboard-project-status`.
+
+`pnpm exec astryx template dashboard-data <path>` returns `Error: Unknown template "dashboard-data"`.
+VERIFIED.
+
+These are the three most analytics-relevant templates in the whole catalog, and they are **readable
+via MCP but not scaffoldable via the CLI**. `mcp__astryx__get("dashboard-data")` returns the source.
+
+MCP search results also carry `relatedComponents` and `relatedHooks` fields, which the CLI's `search`
+does not.
+
+**What the CLI does better.** MCP search ranks components above templates and docs unless the query
+literally contains the word "template" or a doc-topic word. On
+`"analytics dashboard with KPI tiles and a data table"` MCP returned eight components and zero
+templates. The CLI's `search` on the identical string returned `dashboard` and `dashboard-portfolio`
+as the top two hits. VERIFIED, same query both ways. On
+`"chart series color data visualization"` MCP returned `Grid`, `useImageMode`, `Blockquote` and
+`Badge`; the CLI returned `useTheme` first, then the three chart templates.
+
+**The name-collision trap.** `mcp__astryx__get("layout")` returns the **`Layout` component**, not the
+`layout` doc topic. There is no way to disambiguate — `get` takes one name space. The CLI separates
+them by command: `astryx docs layout` and `astryx component Layout` resolve differently and both
+work. VERIFIED. An agent that asks MCP for layout doctrine silently gets component props instead.
+
+**Version skew is asymmetric.** MCP *templates* are newer than the installed CLI, but MCP *docs* match
+it: `get("color")` reports the same four sections as `astryx docs color`. MCP's `tokens` doc has a
+`Focus Tokens` section the CLI 0.3.0 lacks, so there is some drift. One thing MCP *does* carry that
+the CLI 0.3.0 does not: the `Layout` `contentWidth` prop, whose description holds the "640 for forms,
+settings, and text-focused pages; 960 for content pages" guidance. `astryx component Layout --json`
+on 0.3.0 does not report `contentWidth` at all. VERIFIED.
+
+> **D8.** Use the CLI as the source of truth for anything you will write into this repo. Its answers
+> match the installed `@astryxdesign/core@0.3.0`; the MCP server's do not.
+
+> **D9.** Use `mcp__astryx__search` only to *find* material, and only with the word "template" in the
+> query when you want templates. Confirm anything it names against `astryx template --list` before
+> you rely on it. A template MCP knows about may not be installable.
+
+> **D10.** Never call `mcp__astryx__get` for a doc topic whose name is also a component name —
+> `layout`, `theme`, `icons`. Use `astryx docs <topic>` for doctrine and `astryx component <Name>` for
+> props.
+
+*Expectation hook.* The transcript contains no `mcp__astryx__get("layout")` call.
+
+### D-d. Machine-readable and dense output
+
+The Instrument will parse this output, so the flags matter. All VERIFIED.
+
+| Flag | Status | Note |
+| --- | --- | --- |
+| `--json` | Works | `{ type, data }` on success, `{ error, suggestions? }` on error. Works on `docs`, `component`, `template --list`, `search`, `manifest`. The error envelope for `get`-style misses lists valid alternatives, which is useful for recovery |
+| `--dense` | Works | `astryx docs layout` is 5432 bytes plain, 3850 dense — 29% saving |
+| `--detail full\|compact\|brief` | **Partly broken** | Works on `component`. On `docs`, both `brief` and `compact` return **0 bytes** |
+| `astryx docs <topic> <section>` | Works | Cheapest way to read one part of a large topic |
+| `astryx manifest --json` | Works | The capability surface, including `jsonSupported` and `responseTypes` |
+| `--zh` / `--lang` | Present | Not relevant here |
+
+> **D11.** Read docs with `astryx docs <topic> <section>` or `--dense`. Never pass `--detail brief` or
+> `--detail compact` to `docs`; it returns nothing and you will conclude the topic is empty.
+
+> **D12.** Parse CLI output with `--json`, never by scraping the text form.
+
+### D-e. Where the CLI is wrong, and the Layer must warn rather than route
+
+Routing an agent to a command that emits broken code is worse than saying nothing. These need a
+warning in `design.md`, not a pointer.
+
+**`astryx layout expand` emits code that does not compile.** VERIFIED, and this is the sharpest
+example. Running:
+
+```
+astryx layout expand 'A[cp0 @sideNav=SN] > L > LH"Revenue" + LC > S[p4] > (C[p4]*4) + T'
+```
+
+emits six imports, and **every one of them is wrong**:
+
+```tsx
+import {XDSAppShell} from '@astryxdesign/core/AppShell';
+import {XDSCard} from '@astryxdesign/core/Card';
+import {XDSLayout, XDSLayoutContent, XDSLayoutHeader} from '@astryxdesign/core/Layout';
+import {XDSSection} from '@astryxdesign/core/Section';
+import {XDSSideNav} from '@astryxdesign/core/SideNav';
+import {XDSTable} from '@astryxdesign/core/Table';
+```
+
+I imported each subpath at runtime and checked its exported keys. Every module exports the unprefixed
+name and **no `XDS`-prefixed name**:
+
+```
+@astryxdesign/core/AppShell  | has AppShell: true | has XDSAppShell: false
+@astryxdesign/core/Card      | has Card: true     | has XDSCard: false
+@astryxdesign/core/Layout    | has Layout: true   | has XDSLayout: false
+@astryxdesign/core/Table     | has Table: true    | has XDSTable: false
+@astryxdesign/core/Section   | has Section: true  | has XDSSection: false
+@astryxdesign/core/SideNav   | has SideNav: true  | has XDSSideNav: false
+```
+
+Only three `XDS`-prefixed symbols exist anywhere in `dist`, and none of them is one of these. The
+command's own banner claims the output is "validated". It is not.
+
+Two further problems with the same command. It refuses an absolute output path —
+"absolute paths are not allowed. Use a path relative to the project root" — so it **cannot write
+outside the repository**, which makes it unusable for scratch exploration. And its own
+`astryx layout grammar` cheatsheet uses `{kpi-card}` as its worked example of a block reference;
+`astryx layout check` rejects that expression with
+`Unknown block '{kpi-card}' - block hints must name an existing template block`. VERIFIED. There is no
+KPI card block, which independently confirms C29.
+
+> **D13.** Never run `astryx layout expand` or `astryx layout check`. The generated imports do not
+> resolve in v0.3.0. Compose the frame by hand from `astryx docs layout`.
+
+**The other warnings, carried over from the cross-check.** Each is a case where the Foundation points
+somewhere it should not.
+
+> **D14.** Treat every `astryx template` scaffold as reading material, not as code. Before you use any
+> of it: delete the `'use client'` directive and the Meta copyright header, replace every
+> `@heroicons/react` import with a semantic icon name, remove every `recharts`,
+> `@astryxdesign/charts` and `@astryxdesign/lab` import, replace every inline `style={{…}}` with an
+> `xstyle` prop and a token, and rename block files to kebab-case. Never commit a scaffold.
+
+*Expectation hook.* For an edit Fixture seeded from a scaffold, the output contains no `'use client'`,
+no `Copyright (c) Meta Platforms`, no `@heroicons/react`, and no `style={{`.
+---
+
 ## Cross-check against reality
 
 ### What breaks when you take a template at face value
@@ -958,7 +1252,7 @@ Sixteen found. All from source read by the template sub-agent; I re-verified ite
 
 ### Where the Foundation contradicts itself
 
-Four self-contradictions worth citing in `design.md`, because they prove the Layer is needed rather
+Seven self-contradictions worth citing in `design.md`, because they prove the Layer is needed rather
 than merely nice.
 
 1. **`astryx docs illustrations` violates `astryx docs principles`.** Its worked example renders a raw
@@ -973,16 +1267,26 @@ than merely nice.
    never learn these tokens exist.
 4. **`astryx build "error state"` recommends a template with no error state.** VERIFIED for the
    recommendation; the absence was reported by the template sub-agent across all 29 files.
+5. **`astryx layout expand` calls its own output "validated" and emits imports that do not resolve.**
+   All six emitted `XDS`-prefixed names are absent from the packages they are imported from. VERIFIED
+   by importing each subpath and reading its exported keys. See D-e.
+6. **`astryx layout grammar` uses a block in its worked example that does not exist.** Its
+   `{kpi-card}` reference is rejected by `astryx layout check` with "Unknown block '{kpi-card}'".
+   VERIFIED.
+7. **`astryx build`'s own playbook says "No `style={{}}`", and every template uses it.**
+   `settings-sidebar` alone has 17 inline `style=` attributes, and no template uses `xstyle` at all.
+   VERIFIED for the playbook text; the counts came from the template sub-agent.
 
 ### Bucket counts
 
 | Bucket | Entries |
 | --- | --- |
-| A — settled opinions, adopt verbatim | 25 |
+| A — settled opinions, adopt verbatim | 27 |
 | B — open choices, we pick one | 20 |
 | C — silences, we author from nothing | 38 |
+| D — discovery guidance, route to a command | 14 |
 | Template inconsistencies | 16 |
-| Foundation self-contradictions | 4 |
+| Foundation self-contradictions | 7 |
 
 ---
 
@@ -999,6 +1303,15 @@ than merely nice.
   `https://astryx.atmeta.com/mcp`. Where a website quote and a CLI quote agree, I cite the CLI.
 - **The `jsx-no-jsx-as-prop` decision.** Flagged, not resolved. It is a repo-configuration call, and it
   blocks any Fixture that grades on a clean lint pass.
+- **Whether the three MCP-only dashboard templates are worth having.** I read their descriptions, not
+  their source. `dashboard-data` and `dashboard-cohort-funnel` sound like the most analytics-relevant
+  material in the whole catalog, and they cannot be scaffolded from the installed CLI. Reading them
+  through `mcp__astryx__get` is possible and may be worth a follow-up.
+- **Whether `astryx layout expand` is broken in later versions.** VERIFIED broken on 0.3.0. Not checked
+  against 0.5.0.
+- **Whether a Run can reach the MCP server at all.** `.mcp.json` configures it for this session. Whether
+  an Arm-1 Run inside the Instrument gets the same MCP configuration is an orchestration question, not
+  a research one, and it decides whether D8 to D10 are rules or dead letters.
 
 ## Scope note
 
@@ -1006,3 +1319,9 @@ This document gathers material. It does not author `design.md`, and it registers
 Foundation — Astryx extensibility is out of scope per
 [#5](https://github.com/andrskr/something-something-ui/issues/5). Templates were scaffolded to a
 scratch path outside the repository and are reference code only.
+
+Bucket D routes an agent to Astryx's own commands. It adds nothing to Astryx's catalog and writes
+nothing to `astryx.config.mjs`. One capability found during the probe does fall on the far side of
+that line and was deliberately left alone: `astryx layout` supports registering local components under
+`experimental.xle.components` in `astryx.config.mjs`, so that `{kpi-card}` would resolve to our own
+component. That is registering our material into the Foundation, so it stays out of scope.
