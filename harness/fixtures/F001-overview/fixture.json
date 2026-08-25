@@ -20,12 +20,50 @@
     "Icon"
   ],
   "expectations": [
-    "Every chart is built from one named local chart component, not several ad-hoc inline chart bodies.",
-    "Series colours come from the --color-data-categorical-* tokens in declared order, not from hand-picked hex values or a fresh choice per chart.",
-    "Trend direction uses --color-success and --color-error, never a categorical data token.",
-    "The page has exactly one Heading level={1}, and it sits in the page header rather than mid-content.",
-    "Numbers are formatted through a single shared formatter with an explicit locale, not by hand-rolled toLocaleString calls scattered through the file.",
-    "The KPI tile is defined once and reused, ordering value then label then delta, rather than being written out several different ways.",
-    "No raw hex colours, pixel values or font sizes appear anywhere, including inside chart library props."
+    {
+      "id": "E1",
+      "text": "Every chart is built from one named local chart component, not several ad-hoc inline chart bodies."
+    },
+    {
+      "id": "E2",
+      "text": "Series colours come from the --color-data-categorical-* tokens in declared order, not from hand-picked hex values or a fresh choice per chart."
+    },
+    {
+      "id": "E3",
+      "text": "Trend direction uses --color-success and --color-error, never a categorical data token.",
+      "check": {
+        "kind": "present",
+        "pattern": "color-(success|error)"
+      }
+    },
+    {
+      "id": "E4",
+      "text": "The page has exactly one Heading level={1}, and it sits in the page header rather than mid-content.",
+      "check": {
+        "kind": "count",
+        "pattern": "level=\\{1\\}",
+        "equals": 1
+      }
+    },
+    {
+      "id": "E5",
+      "text": "Numbers are formatted through a single shared formatter with an explicit locale, not by hand-rolled toLocaleString calls scattered through the file.",
+      "check": {
+        "kind": "present",
+        "pattern": "Intl\\.NumberFormat"
+      }
+    },
+    {
+      "id": "E6",
+      "text": "The KPI tile is defined once and reused, ordering value then label then delta, rather than being written out several different ways."
+    },
+    {
+      "id": "E7",
+      "text": "No raw hex colours, pixel values or font sizes appear anywhere, including inside chart library props.",
+      "check": {
+        "kind": "absent",
+        "pattern": "#[0-9a-fA-F]{6}"
+      }
+    }
   ]
 }

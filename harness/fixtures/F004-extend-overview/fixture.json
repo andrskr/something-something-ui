@@ -9,13 +9,41 @@
   "pilot": false,
   "ideal": false,
   "beforeState": "A real page from an unaided Run: hand-rolled SVG chart, hex fallbacks inside var() references.",
-  "expectedComponents": ["Card", "Grid", "Text", "Heading", "StatusDot"],
+  "expectedComponents": [
+    "Card",
+    "Grid",
+    "Text",
+    "Heading",
+    "StatusDot"
+  ],
   "expectations": [
-    "The new metric is rendered by the same KPI tile abstraction as the existing ones, not by a second parallel implementation.",
-    "The second chart uses the same charting approach as the first; the page does not end up with two different chart technologies.",
-    "If the existing chart is replaced, it is replaced wholesale rather than leaving two approaches side by side.",
-    "New series colours continue the existing categorical token order instead of restarting or picking fresh values.",
-    "Existing raw hex fallbacks are not propagated into the new code.",
-    "Number formatting reuses whatever formatter the page already established rather than introducing a second one."
+    {
+      "id": "E1",
+      "text": "The new metric is rendered by the same KPI tile abstraction as the existing ones, not by a second parallel implementation."
+    },
+    {
+      "id": "E2",
+      "text": "The second chart uses the same charting approach as the first; the page does not end up with two different chart technologies."
+    },
+    {
+      "id": "E3",
+      "text": "If the existing chart is replaced, it is replaced wholesale rather than leaving two approaches side by side."
+    },
+    {
+      "id": "E4",
+      "text": "New series colours continue the existing categorical token order instead of restarting or picking fresh values."
+    },
+    {
+      "id": "E5",
+      "text": "Existing raw hex fallbacks are not propagated into the new code.",
+      "check": {
+        "kind": "absent",
+        "pattern": "#[0-9a-fA-F]{6}"
+      }
+    },
+    {
+      "id": "E6",
+      "text": "Number formatting reuses whatever formatter the page already established rather than introducing a second one."
+    }
   ]
 }

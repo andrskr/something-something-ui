@@ -9,5 +9,19 @@
   "pilot": false,
   "ideal": false,
   "expectedComponents": [],
-  "expectations": []
+  "expectations": [
+    {
+      "id": "E1",
+      "text": "Sentence naming the correct behaviour AND the anti-pattern it displaces.",
+      "check": {
+        "kind": "present | absent | count",
+        "pattern": "regex over the generated file",
+        "equals": 1
+      }
+    },
+    {
+      "id": "E2",
+      "text": "Omit check when only a judge can settle it."
+    }
+  ]
 }

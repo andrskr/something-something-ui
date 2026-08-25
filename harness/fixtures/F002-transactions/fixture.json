@@ -20,13 +20,57 @@
     "Banner"
   ],
   "expectations": [
-    "Numeric and currency columns are right-aligned; text and date columns are left-aligned.",
-    "Every column declares an explicit width rather than leaving the table to distribute space implicitly.",
-    "Columns the user was told they could sort by are actually marked sortable, and the table has a default sort.",
-    "Currency, dates and percentages are formatted through shared formatters with an explicit locale, not hand-rolled per cell.",
-    "A site that did not report renders distinctly from a site that reported zero; the two are never collapsed into the same cell content.",
-    "The failed discount feed surfaces as an explicit error state, never as a blank or a zero.",
-    "An empty result set renders an empty state that names what is empty and what to do next, not a bare header row.",
-    "Status is shown with StatusDot carrying a text label, not with a bare coloured dot or a decorative Badge."
+    {
+      "id": "E1",
+      "text": "Numeric and currency columns are right-aligned; text and date columns are left-aligned.",
+      "check": {
+        "kind": "present",
+        "pattern": "align:\\s*'(right|end)'"
+      }
+    },
+    {
+      "id": "E2",
+      "text": "Every column declares an explicit width rather than leaving the table to distribute space implicitly.",
+      "check": {
+        "kind": "present",
+        "pattern": "(pixel|proportional)\\("
+      }
+    },
+    {
+      "id": "E3",
+      "text": "Columns the user was told they could sort by are actually marked sortable, and the table has a default sort.",
+      "check": {
+        "kind": "present",
+        "pattern": "sortable"
+      }
+    },
+    {
+      "id": "E4",
+      "text": "Currency, dates and percentages are formatted through shared formatters with an explicit locale, not hand-rolled per cell.",
+      "check": {
+        "kind": "present",
+        "pattern": "Intl\\."
+      }
+    },
+    {
+      "id": "E5",
+      "text": "A site that did not report renders distinctly from a site that reported zero; the two are never collapsed into the same cell content."
+    },
+    {
+      "id": "E6",
+      "text": "The failed discount feed surfaces as an explicit error state, never as a blank or a zero."
+    },
+    {
+      "id": "E7",
+      "text": "An empty result set renders an empty state that names what is empty and what to do next, not a bare header row."
+    },
+    {
+      "id": "E8",
+      "text": "Status is shown with StatusDot carrying a text label, not with a bare coloured dot or a decorative Badge.",
+      "check": {
+        "kind": "present",
+        "pattern": "StatusDot[\\s\\S]{0,120}?label="
+      }
+    }
   ]
 }
