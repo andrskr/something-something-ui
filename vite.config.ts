@@ -5,7 +5,17 @@ export default defineConfig({
     '*': 'vp check --fix',
   },
   fmt: {
-    ignorePatterns: ['**/routeTree.gen.ts', '**/dist/**', '**/dist-ssr/**', 'coverage/**'],
+    // harness/fixtures/** holds Fixture material, not app code: before-states are snapshots of
+    // generated pages that only resolve inside a prepared worktree. Checking them here type-checks
+    // them against the wrong context and reports errors that are not real. Generated code is
+    // always evaluated in situ - see harness/AGENTS.md.
+    ignorePatterns: [
+      '**/routeTree.gen.ts',
+      '**/dist/**',
+      '**/dist-ssr/**',
+      'coverage/**',
+      'harness/fixtures/**',
+    ],
     arrowParens: 'always',
     bracketSameLine: false,
     bracketSpacing: true,
@@ -76,7 +86,17 @@ export default defineConfig({
     ],
   },
   lint: {
-    ignorePatterns: ['**/routeTree.gen.ts', '**/dist/**', '**/dist-ssr/**', 'coverage/**'],
+    // harness/fixtures/** holds Fixture material, not app code: before-states are snapshots of
+    // generated pages that only resolve inside a prepared worktree. Checking them here type-checks
+    // them against the wrong context and reports errors that are not real. Generated code is
+    // always evaluated in situ - see harness/AGENTS.md.
+    ignorePatterns: [
+      '**/routeTree.gen.ts',
+      '**/dist/**',
+      '**/dist-ssr/**',
+      'coverage/**',
+      'harness/fixtures/**',
+    ],
     jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
     env: {
       browser: true,

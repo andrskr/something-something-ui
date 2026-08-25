@@ -1,8 +1,8 @@
 {
   "id": "_template",
   "title": "Human-readable name",
-  "kind": "greenfield",
-  "persona": "vague-operator",
+  "kind": "greenfield | edit",
+  "persona": "naive | experienced | adversarial",
   "category": "dashboard",
   "target": "apps/web/src/routes/<route>.tsx",
   "holdout": false,

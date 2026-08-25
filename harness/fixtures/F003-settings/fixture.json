@@ -1,0 +1,32 @@
+{
+  "id": "F003-settings",
+  "title": "Multi-section settings with inline editing",
+  "kind": "greenfield",
+  "persona": "adversarial",
+  "category": "settings",
+  "target": "apps/web/src/routes/settings.tsx",
+  "holdout": true,
+  "pilot": false,
+  "ideal": false,
+  "expectedComponents": [
+    "Layout",
+    "LayoutContent",
+    "SideNav",
+    "Divider",
+    "Text",
+    "Heading",
+    "Field",
+    "TextInput",
+    "Switch",
+    "Button"
+  ],
+  "expectations": [
+    "One grouping strategy is used for every section of the page, not Cards in one section and bare Dividers in another.",
+    "Section titles all use the same heading level, and that level is one below the page title.",
+    "The content column is constrained to the width the design system specifies for settings and forms, not left to fill a dashboard-width page.",
+    "Every editable field has a persistent visible label, not a placeholder standing in for one.",
+    "Entering and leaving an inline edit does not change the row's height or shift the rows below it.",
+    "Destructive actions are separated from ordinary ones and name the object they act on.",
+    "Sensitive values are masked by default and the page says why, rather than showing them outright."
+  ]
+}

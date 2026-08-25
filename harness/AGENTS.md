@@ -80,6 +80,9 @@ the effect and Arm 3 has nothing left to show.
   verified after the fact** — which is exactly why it is always passed.
 - **Use `vp check`, never `vp lint`.** `vp lint` is a Vite+ built-in that reports nothing here; a
   scorer wired to it silently passes everything.
+- **`harness/fixtures/**` is excluded from `vp fmt` and `vp check`.** Fixture before-states are
+  snapshots of generated pages; they only resolve inside a prepared worktree, so checking them in
+  the repo's own context reports 66 errors that are not real. Do not "fix" them.
 - **Score generated code in situ.** A route passes `vp check` in `src/routes/` and trips
   `react(only-export-components)` when copied aside. Lint results depend on location.
 - **Never edit inside `ASTRYX:START/END`.** `astryx init` regenerates it verbatim.

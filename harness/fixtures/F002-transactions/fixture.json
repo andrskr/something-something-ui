@@ -1,0 +1,32 @@
+{
+  "id": "F002-transactions",
+  "title": "Dense transactions table with absent and failed data",
+  "kind": "greenfield",
+  "persona": "experienced",
+  "category": "table",
+  "target": "apps/web/src/routes/transactions.tsx",
+  "holdout": false,
+  "pilot": false,
+  "ideal": false,
+  "expectedComponents": [
+    "Layout",
+    "LayoutContent",
+    "Table",
+    "StatusDot",
+    "Pagination",
+    "Text",
+    "Heading",
+    "EmptyState",
+    "Banner"
+  ],
+  "expectations": [
+    "Numeric and currency columns are right-aligned; text and date columns are left-aligned.",
+    "Every column declares an explicit width rather than leaving the table to distribute space implicitly.",
+    "Columns the user was told they could sort by are actually marked sortable, and the table has a default sort.",
+    "Currency, dates and percentages are formatted through shared formatters with an explicit locale, not hand-rolled per cell.",
+    "A site that did not report renders distinctly from a site that reported zero; the two are never collapsed into the same cell content.",
+    "The failed discount feed surfaces as an explicit error state, never as a blank or a zero.",
+    "An empty result set renders an empty state that names what is empty and what to do next, not a bare header row.",
+    "Status is shown with StatusDot carrying a text label, not with a bare coloured dot or a decorative Badge."
+  ]
+}
