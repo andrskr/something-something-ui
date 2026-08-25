@@ -363,6 +363,16 @@ export default defineConfig({
         },
       },
       {
+        // The Instrument is a CLI: printing a Run's result is its output, not a stray debug
+        // statement. Fixture folders follow @vercel/agent-eval's contract (PROMPT.md, EVAL.ts),
+        // which mandates names this repo's kebab-case rule would otherwise reject.
+        files: ['harness/**/*'],
+        rules: {
+          'no-console': 'off',
+          'unicorn/filename-case': 'off',
+        },
+      },
+      {
         files: [
           '**/*.spec.js',
           '**/*.spec.jsx',

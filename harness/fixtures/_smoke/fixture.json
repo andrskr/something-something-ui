@@ -1,0 +1,13 @@
+{
+  "id": "_smoke",
+  "title": "Plumbing smoke test",
+  "kind": "greenfield",
+  "persona": "n/a",
+  "category": "smoke",
+  "target": "apps/web/src/routes/smoke.tsx",
+  "holdout": false,
+  "pilot": false,
+  "ideal": false,
+  "expectedComponents": [],
+  "expectations": []
+}

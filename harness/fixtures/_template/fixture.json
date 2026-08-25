@@ -1,0 +1,13 @@
+{
+  "id": "_template",
+  "title": "Human-readable name",
+  "kind": "greenfield",
+  "persona": "vague-operator",
+  "category": "dashboard",
+  "target": "apps/web/src/routes/<route>.tsx",
+  "holdout": false,
+  "pilot": false,
+  "ideal": false,
+  "expectedComponents": [],
+  "expectations": []
+}
