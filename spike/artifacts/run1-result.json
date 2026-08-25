@@ -1,0 +1,105 @@
+{
+  "is_error": false,
+  "duration_api_ms": 400651,
+  "num_turns": 60,
+  "stop_reason": "end_turn",
+  "session_id": "b098dc77-d3b0-4a42-9dc9-18cc6e436dc9",
+  "total_cost_usd": 1.7049770000000002,
+  "usage": {
+    "input_tokens": 108,
+    "cache_creation_input_tokens": 95402,
+    "cache_read_input_tokens": 5014050,
+    "output_tokens": 31929,
+    "output_tokens_details": {
+      "thinking_tokens": 13871
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 95402,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 480,
+        "cache_read_input_tokens": 126327,
+        "cache_creation_input_tokens": 437,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 437
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 988,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.001053,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-sonnet-5": {
+      "inputTokens": 108,
+      "outputTokens": 31929,
+      "cacheReadInputTokens": 5014050,
+      "cacheCreationInputTokens": 95402,
+      "webSearchRequests": 0,
+      "costUSD": 1.7039240000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-sonnet-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "Everything's in order and verified. Summary of what I did:\n\n- Added `apps/web/src/routes/overview.tsx`, a new route at `/overview` built from Astryx's `dashboard` template pattern, using `Layout`/`Grid`/`Card`/`Table`/`StatusDot`/`Icon` components (Phosphor semantic icons per this repo's theme, not Heroicons from the raw template).\n- **Headline numbers**: 4 metric cards (total revenue, transactions, avg. basket size, CSAT) each with an up/down arrow vs. last week.\n- **Weekly trend**: a line chart (this week vs. last week, Mon–Sun) — added `recharts` as a new dependency to `apps/web/package.json` since it's not in the workspace and Astryx has no built-in chart component (its own templates rely on recharts too).\n- **Sites needing attention**: a compact table of the 4 sites down >5% week-over-week, worst first, with `StatusDot` severity and a reason column.\n- Fixed lint issues from `vp check` (JSX-as-prop, strict-boolean-expressions, an invalid `Text` color) and replaced inline `style={{color}}` with StyleX `xstyle` per this repo's self-check rule.\n- Verified with `vp run build`, `vp check --fix` (clean), and `vp preview` + fetching `/overview` — confirmed all the sample data renders correctly server-side.",
+  "ttft_ms": 3384,
+  "ttft_stream_ms": 1919,
+  "time_to_request_ms": 24,
+  "type": "result",
+  "duration_ms": 472587,
+  "uuid": "983a01fd-7b12-4e0f-bba0-89effdf4a1d7",
+  "queued_turn_count": 0
+}

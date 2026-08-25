@@ -1,0 +1,337 @@
+import { Card } from '@astryxdesign/core/Card';
+import { Divider } from '@astryxdesign/core/Divider';
+import { Grid } from '@astryxdesign/core/Grid';
+import { Icon } from '@astryxdesign/core/Icon';
+import { HStack, Layout, LayoutContent, VStack } from '@astryxdesign/core/Layout';
+import { StatusDot } from '@astryxdesign/core/StatusDot';
+import { pixel, proportional, Table } from '@astryxdesign/core/Table';
+import type { TableColumn } from '@astryxdesign/core/Table';
+import { Heading, Text } from '@astryxdesign/core/Text';
+import * as stylex from '@stylexjs/stylex';
+import { createFileRoute } from '@tanstack/react-router';
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
+export const Route = createFileRoute('/overview')({ component: Overview });
+
+// ============= SAMPLE DATA =============
+// Hard-coded sample data for the week of Aug 18-24, 2026.
+
+interface HeadlineMetric {
+  label: string;
+  value: string;
+  change: string;
+  isPositive: boolean;
+}
+
+const headlineMetrics: HeadlineMetric[] = [
+  { label: 'Total revenue', value: '$1.84M', change: '+2.2%', isPositive: true },
+  { label: 'Total transactions', value: '42,150', change: '-1.8%', isPositive: false },
+  { label: 'Avg. basket size', value: '$43.65', change: '+4.1%', isPositive: true },
+  { label: 'Customer satisfaction', value: '4.3 / 5', change: '-0.2 pt', isPositive: false },
+];
+
+// Daily revenue, in $ thousands, Mon-Sun.
+const weeklyTrend = [
+  { day: 'Mon', thisWeek: 230, lastWeek: 225 },
+  { day: 'Tue', thisWeek: 240, lastWeek: 230 },
+  { day: 'Wed', thisWeek: 250, lastWeek: 245 },
+  { day: 'Thu', thisWeek: 245, lastWeek: 240 },
+  { day: 'Fri', thisWeek: 290, lastWeek: 280 },
+  { day: 'Sat', thisWeek: 340, lastWeek: 330 },
+  { day: 'Sun', thisWeek: 245, lastWeek: 250 },
+];
+
+const trendColors = {
+  thisWeek: 'var(--color-data-categorical-blue, #0171E3)',
+  lastWeek: 'var(--color-data-neutral, #8494A3)',
+};
+
+const trendDotStyles = stylex.create({
+  thisWeek: { color: 'var(--color-data-categorical-blue, #0171E3)' },
+  lastWeek: { color: 'var(--color-data-neutral, #8494A3)' },
+});
+
+interface SiteRow extends Record<string, unknown> {
+  id: string;
+  site: string;
+  region: string;
+  revenue: string;
+  change: string;
+  severity: 'error' | 'warning';
+  note: string;
+}
+
+// Sites more than 5% behind last week, worst first.
+const sitesNeedingAttention: SiteRow[] = [
+  {
+    id: '1',
+    site: 'Riverside Plaza',
+    region: 'Riverside, CA',
+    revenue: '$59,800',
+    change: '-21.5%',
+    severity: 'error',
+    note: 'Register downtime Tue-Wed',
+  },
+  {
+    id: '2',
+    site: 'Eastgate Center',
+    region: 'Columbus, OH',
+    revenue: '$68,400',
+    change: '-14.2%',
+    severity: 'error',
+    note: 'Foot traffic down 3rd straight day',
+  },
+  {
+    id: '3',
+    site: 'Harbor Point',
+    region: 'Tampa, FL',
+    revenue: '$81,900',
+    change: '-9.6%',
+    severity: 'warning',
+    note: 'Missed daily target Thu-Sat',
+  },
+  {
+    id: '4',
+    site: 'North Loop',
+    region: 'Minneapolis, MN',
+    revenue: '$74,250',
+    change: '-7.8%',
+    severity: 'warning',
+    note: 'Staffing gap on weekend shifts',
+  },
+];
+
+const sitesNeedingAttentionColumns: TableColumn<SiteRow>[] = [
+  {
+    key: 'site',
+    header: 'Site',
+    width: proportional(1),
+    renderCell: (item) => (
+      <VStack gap={0}>
+        <Text weight="semibold">{item.site}</Text>
+        <Text type="supporting" color="secondary">
+          {item.region}
+        </Text>
+      </VStack>
+    ),
+  },
+  { key: 'revenue', header: 'This week', width: pixel(110) },
+  {
+    key: 'change',
+    header: 'vs. last week',
+    width: pixel(130),
+    renderCell: (item) => (
+      <HStack gap={1} vAlign="center">
+        <Icon icon="arrowDown" color="error" size="xsm" />
+        <Text>{item.change}</Text>
+      </HStack>
+    ),
+  },
+  {
+    key: 'status',
+    header: 'Status',
+    width: pixel(140),
+    renderCell: (item) => (
+      <HStack gap={2} vAlign="center">
+        <StatusDot
+          variant={item.severity}
+          label={item.severity === 'error' ? 'Critical' : 'Watch'}
+        />
+        <Text type="supporting">{item.severity === 'error' ? 'Critical' : 'Watch'}</Text>
+      </HStack>
+    ),
+  },
+  { key: 'note', header: 'Why', width: proportional(1) },
+];
+
+// ============= COMPONENTS =============
+
+function MetricCard({ label, value, change, isPositive }: HeadlineMetric) {
+  return (
+    <Card>
+      <VStack gap={2}>
+        <Text type="label" color="secondary">
+          {label}
+        </Text>
+        <Heading level={2}>{value}</Heading>
+        <HStack gap={1} vAlign="center">
+          <Icon
+            icon={isPositive ? 'arrowUp' : 'arrowDown'}
+            color={isPositive ? 'success' : 'error'}
+            size="sm"
+          />
+          <Text type="supporting" color="secondary">
+            {change} vs. last week
+          </Text>
+        </HStack>
+      </VStack>
+    </Card>
+  );
+}
+
+function TrendLegendItem({
+  series,
+  label,
+}: Readonly<{ series: 'thisWeek' | 'lastWeek'; label: string }>) {
+  return (
+    <HStack gap={2} vAlign="center">
+      <Icon icon="stop" size="xsm" xstyle={trendDotStyles[series]} />
+      <Text type="supporting" color="secondary">
+        {label}
+      </Text>
+    </HStack>
+  );
+}
+
+const trendSeriesLabels: Record<string, 'thisWeek' | 'lastWeek'> = {
+  'This week': 'thisWeek',
+  'Last week': 'lastWeek',
+};
+
+function WeeklyTrendTooltip({
+  active,
+  payload,
+  label,
+}: Readonly<{
+  active?: boolean;
+  payload?: Array<{ name: string; value: number }>;
+  label?: string;
+}>) {
+  if (active !== true || payload === undefined || payload.length === 0) {
+    return null;
+  }
+  return (
+    <Card padding={3}>
+      <VStack gap={1}>
+        <Text type="supporting" color="secondary">
+          {label}
+        </Text>
+        {payload.map((entry) => (
+          <HStack key={entry.name} gap={2} vAlign="center">
+            <Icon icon="stop" size="xsm" xstyle={trendDotStyles[trendSeriesLabels[entry.name]]} />
+            <Text type="supporting">
+              {entry.name}: ${entry.value}k
+            </Text>
+          </HStack>
+        ))}
+      </VStack>
+    </Card>
+  );
+}
+
+const weeklyTrendTooltip = <WeeklyTrendTooltip />;
+
+function WeeklyTrendChart() {
+  return (
+    <VStack gap={3}>
+      <ResponsiveContainer width="100%" height={280}>
+        <LineChart data={weeklyTrend} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+          <CartesianGrid
+            horizontal
+            vertical={false}
+            stroke="var(--color-border, rgba(5, 54, 89, 0.1))"
+          />
+          <XAxis
+            dataKey="day"
+            tick={{ fontSize: 12, fill: 'var(--color-text-secondary, #4E606F)' }}
+            axisLine={false}
+            tickLine={false}
+          />
+          <YAxis
+            tick={{ fontSize: 12, fill: 'var(--color-text-secondary, #4E606F)' }}
+            axisLine={false}
+            tickLine={false}
+            width={40}
+            tickFormatter={(value: number) => `$${value}k`}
+          />
+          <Tooltip
+            content={weeklyTrendTooltip}
+            cursor={{ stroke: 'var(--color-border, rgba(5, 54, 89, 0.1))' }}
+          />
+          <Line
+            type="monotone"
+            dataKey="thisWeek"
+            name="This week"
+            stroke={trendColors.thisWeek}
+            strokeWidth={2}
+            dot={{ r: 3 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="lastWeek"
+            name="Last week"
+            stroke={trendColors.lastWeek}
+            strokeWidth={2}
+            strokeDasharray="4 4"
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+      <HStack gap={6} vAlign="center">
+        <TrendLegendItem series="thisWeek" label="This week" />
+        <TrendLegendItem series="lastWeek" label="Last week" />
+      </HStack>
+    </VStack>
+  );
+}
+
+// ============= MAIN COMPONENT =============
+
+function Overview() {
+  return (
+    <Layout height="fill">
+      <LayoutContent padding={6}>
+        <VStack gap={6}>
+          <VStack gap={1}>
+            <Heading level={1}>Regional overview</Heading>
+            <Text type="supporting" color="secondary">
+              Week of Aug 18-24, 2026
+            </Text>
+          </VStack>
+
+          <Grid columns={{ minWidth: 220, repeat: 'fit' }} gap={4}>
+            {headlineMetrics.map((metric) => (
+              <MetricCard key={metric.label} {...metric} />
+            ))}
+          </Grid>
+
+          <Divider />
+
+          <VStack gap={4}>
+            <Heading level={3}>Weekly revenue trend</Heading>
+            <WeeklyTrendChart />
+          </VStack>
+
+          <Divider />
+
+          <VStack gap={4}>
+            <VStack gap={1}>
+              <Heading level={3}>Sites needing attention</Heading>
+              <Text type="supporting" color="secondary">
+                Sites down more than 5% vs. last week, worst first.
+              </Text>
+            </VStack>
+            <Card>
+              <Table<SiteRow>
+                data={sitesNeedingAttention}
+                columns={sitesNeedingAttentionColumns}
+                idKey="id"
+                density="compact"
+                dividers="rows"
+                hasHover
+              />
+            </Card>
+          </VStack>
+        </VStack>
+      </LayoutContent>
+    </Layout>
+  );
+}
