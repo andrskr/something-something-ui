@@ -447,9 +447,12 @@ export default defineConfig({
           'vitest/prefer-strict-boolean-matchers': 'error',
           'vitest/prefer-strict-equal': 'error',
           'vitest/prefer-to-be': 'error',
-          'vitest/prefer-to-be-falsy': 'error',
+          // Mutually exclusive with prefer-strict-boolean-matchers above, which demands
+          // toBe(false) on the very line this rule demands toBeFalsy(). Keeping the stricter
+          // one: a function typed boolean should be asserted against a boolean.
+          'vitest/prefer-to-be-falsy': 'off',
           'vitest/prefer-to-be-object': 'error',
-          'vitest/prefer-to-be-truthy': 'error',
+          'vitest/prefer-to-be-truthy': 'off',
           'vitest/prefer-to-contain': 'error',
           'vitest/prefer-to-have-been-called-times': 'error',
           'vitest/prefer-to-have-length': 'error',

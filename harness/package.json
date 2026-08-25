@@ -2,6 +2,9 @@
   "name": "@acme/harness",
   "private": true,
   "type": "module",
+  "scripts": {
+    "test": "vp test --run"
+  },
   "devDependencies": {
     "playwright": "^1.56.0"
   }
