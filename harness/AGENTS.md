@@ -114,6 +114,26 @@ $1.70 / 475 s in one Run and
 43 / $1.10 / 315 s in another. **Single Runs are not comparable.** Five
 Repeats is a floor, not a luxury.
 
+## Tests
+
+```bash
+vp run test                    # from the repo root
+cd harness && vp test --run
+```
+
+41 tests over the five pure modules — `arms`, `transcript`, `profile`, `divergence`, `checks`.
+Import from `vite-plus/test`, not `vitest`.
+
+They exist because three separate edits in one session looked applied and were not, and each
+surfaced as an unused declaration in lint rather than as a failing assertion. One would have shipped
+`--effort` as a silent no-op flag, so every Run would have quietly used inherited effort.
+
+**Each test encodes a real defect or a measured behaviour, never an imagined one**: the interrupted
+Run that parsed as `turns 0, cost $0`; the 82 leaked slash commands; the model drifting under a
+context-window suffix; the same component imported from two different modules across Arms; the
+Arm-off Run that used no chart library at all. When you add a test, anchor it on something that
+actually happened.
+
 ## What a Run tells you
 
 `summary.json` carries `costUsd`, `turns`, `durationMs`, full token `usage`, `toolCalls`,
@@ -127,8 +147,8 @@ the four claims.
 
 - No Sweep orchestrator yet: repeats, parallelism and rate-limit pacing are unbuilt. A
   `rate_limit_event` is emitted per Run and should drive pacing.
-- No tests. `lib/arms.ts`, `lib/transcript.ts`, `lib/profile.ts` and `lib/divergence.ts` are pure
-  and worth covering. `harness` is a workspace package now, so nothing blocks adding them.
+- Only the pure modules are tested. `run.ts`, `judge.ts` and `shoot.ts` are process orchestration,
+  and covering them means mocking the world; real Runs exercise them instead.
 - Dark theme is unshot. `CAMERA` fixes one theme; a second would double the picture count.
 - No Ideal has been rendered through the camera yet — F001 carries the only one.
 - `EVAL.ts` is carried for compatibility but never executed.
