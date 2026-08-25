@@ -102,3 +102,19 @@ PR descriptions, and code comments in this repo.
 - The root `vite.config.ts` sets `fmt.ignorePatterns: ["**/routeTree.gen.ts"]`. TanStack Router
   regenerates that file; without the ignore, `vp fmt --check` fails on a generated file no one
   should hand-edit.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live as GitHub issues in `andrskr/something-something-ui`. Use the `gh` CLI. See
+`docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default labels apply. Each label string equals its role name. See
+`docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one root `CONTEXT.md` plus `docs/adr/`. See `docs/agents/domain.md`.
