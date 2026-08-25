@@ -351,6 +351,15 @@ export default defineConfig({
           // TanStack Router's file-based routing conventions (__root, $param, etc.) aren't
           // free-form naming.
           'unicorn/filename-case': 'off',
+          // Astryx composes page shells through slot props: `header={<LayoutHeader…>}`,
+          // `icon={<Icon…/>}`, `actions={…}`. The rule is satisfiable (hoist to a module
+          // constant, or useMemo) but only by writing against the vendor's own idiom - all 14
+          // of Astryx's page templates use the inline form. Enforcing it here would buy a
+          // memoization ritual at the cost of idiomatic composition, on static shells where
+          // the re-render saving is negligible. Its three siblings (jsx-no-new-array/function/
+          // object-as-prop) are already off above for the same class of reason. Still enforced
+          // outside routes, where it catches real re-render cost.
+          'react-perf/jsx-no-jsx-as-prop': 'off',
         },
       },
       {
