@@ -11,6 +11,7 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 import { join } from 'node:path';
 
 import { applyArm, type Arm, ARMS } from './lib/arms.ts';
+import { shoot } from './lib/shoot.ts';
 import { assertComplete, assertSealed, parseTranscript } from './lib/transcript.ts';
 
 const REPO = execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim();
@@ -83,7 +84,13 @@ function prepareWorktree(dir: string, fixtureDir: string, arm: Arm) {
   return sh('git', ['rev-parse', 'HEAD'], dir).out.trim();
 }
 
-function main() {
+/** `apps/web/src/routes/overview.tsx` -> `/overview`; `index.tsx` -> `/`. */
+function routeOf(target: string): string {
+  const name = target.replace('apps/web/src/routes/', '').replace(/\.tsx$/, '');
+  return name === 'index' ? '/' : `/${name}`;
+}
+
+async function main() {
   const fixture = arg('fixture');
   const armArg = arg('arm');
   if (!isArm(armArg)) throw new Error(`--arm must be one of ${ARMS.join(' | ')}`);
@@ -96,6 +103,11 @@ function main() {
   const effort = arg('effort', 'medium');
 
   const fixtureDir = join(HARNESS, 'fixtures', fixture);
+  const meta: unknown = JSON.parse(readFileSync(join(fixtureDir, 'fixture.json'), 'utf8'));
+  const target =
+    typeof meta === 'object' && meta !== null && typeof Reflect.get(meta, 'target') === 'string'
+      ? String(Reflect.get(meta, 'target'))
+      : '';
   const prompt = readFileSync(join(fixtureDir, 'PROMPT.md'), 'utf8')
     .replaceAll(/<!--[\s\S]*?-->/g, '')
     .trim();
@@ -196,8 +208,15 @@ function main() {
     ),
   );
 
+  if (process.argv.includes('--screenshot') && build && target !== '') {
+    // Shoot here, not later: the worktree is already installed and built, and re-creating one
+    // to photograph a result would cost another install per Run.
+    await shoot(wt, routeOf(target), join(out, 'screenshot.png'));
+    console.log(`screenshot: ${join(out, 'screenshot.png')}`);
+  }
+
   if (process.argv.includes('--keep')) console.log(`worktree kept at ${wt}`);
   else sh('git', ['worktree', 'remove', '--force', wt], REPO);
 }
 
-main();
+await main();

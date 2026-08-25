@@ -127,6 +127,8 @@ the four claims.
 
 - No Sweep orchestrator yet: repeats, parallelism and rate-limit pacing are unbuilt. A
   `rate_limit_event` is emitted per Run and should drive pacing.
-- No tests. `lib/arms.ts` and `lib/transcript.ts` are pure and worth covering; `harness/` is
-  deliberately outside the pnpm workspace, so a test package has to be added first.
+- No tests. `lib/arms.ts`, `lib/transcript.ts`, `lib/profile.ts` and `lib/divergence.ts` are pure
+  and worth covering. `harness` is a workspace package now, so nothing blocks adding them.
+- Dark theme is unshot. `CAMERA` fixes one theme; a second would double the picture count.
+- No Ideal has been rendered through the camera yet — F001 carries the only one.
 - `EVAL.ts` is carried for compatibility but never executed.

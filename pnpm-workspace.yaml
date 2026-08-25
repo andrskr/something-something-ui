@@ -2,6 +2,9 @@ packages:
   - apps/*
   - packages/*
   - tools/*
+  # The Instrument. Deliberately not a glob: harness/fixtures/* carry their own package.json
+  # for @vercel/agent-eval compatibility and must never be linked as workspace packages.
+  - harness
 
 catalogMode: prefer
 
