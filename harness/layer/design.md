@@ -83,6 +83,8 @@ Read the finished file and replace each of these where it appears.
 
 - A raw hex, pixel or font size anywhere, **including inside chart library props** — the most common
   place it survives. Use a token.
+- A `var(--token, #hex)` fallback. The token alone is the value; write
+  `var(--color-data-categorical-blue)`.
 - A second formatter, KPI tile or chart implementation beside an existing one.
 - A blank cell, `null`, `N/A` or a bare `0` standing in for a missing value.
 - A table whose numeric columns are left-aligned.

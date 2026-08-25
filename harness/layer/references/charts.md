@@ -19,7 +19,8 @@ series names as props. Two charts of the same shape use the same component twice
 ## Series
 
 - Colours come from `--color-data-categorical-*` in declared order, reserving red and green for
-  series that mean bad and good. Never a raw hex, including in a `stroke`, `fill` or `tick` prop.
+  series that mean bad and good. Write the token alone — `var(--color-data-categorical-blue)` — in
+  every `stroke`, `fill` and `tick` prop, with no hex fallback beside it.
 - Above six series, group the tail into one "Other" series rather than continuing down the palette.
 - Every series carries a visible label in a legend when there is more than one.
 
